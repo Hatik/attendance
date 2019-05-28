@@ -29,8 +29,10 @@ public class Bootstrap implements CommandLineRunner {
 
         User user = new User((long)1, "w.askhat.serikov@gmail.com", BCryptSingleton.getInstance().encode("123"),"Askhat", 1, new HashSet<Role>(Arrays.asList(roleAdmin, roleUser)));
         userRepository.save(user);
-        //        roleRepository.save(roleAdmin);
-        //        roleRepository.save(roleUser);
+        Role roleTeacher = new Role((long) 3, "TEACHER");
+        Role roleStudent = new Role((long) 4, "STUDENT");
+        roleRepository.save(roleTeacher);
+        roleRepository.save(roleStudent);
 
 
     }
