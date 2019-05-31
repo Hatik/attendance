@@ -6,6 +6,7 @@ public class BCryptSingleton {
     private static BCryptPasswordEncoder ourInstance = new BCryptPasswordEncoder();
 
     public static BCryptPasswordEncoder getInstance() {
+        if (ourInstance == null) ourInstance = new BCryptPasswordEncoder();
         return ourInstance;
     }
 

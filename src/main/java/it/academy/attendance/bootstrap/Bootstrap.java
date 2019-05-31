@@ -1,15 +1,19 @@
 package it.academy.attendance.bootstrap;
 
 import it.academy.attendance.configs.BCryptSingleton;
+import it.academy.attendance.models.Class;
+import it.academy.attendance.models.Lecture;
 import it.academy.attendance.models.Role;
 import it.academy.attendance.models.User;
+import it.academy.attendance.repositories.ClassRepository;
+import it.academy.attendance.repositories.LectureRepository;
 import it.academy.attendance.repositories.RoleRepository;
 import it.academy.attendance.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -20,6 +24,10 @@ public class Bootstrap implements CommandLineRunner {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private ClassRepository classRepository;
+    @Autowired
+    private LectureRepository lectureRepository;
 
 
     @Override
@@ -39,6 +47,29 @@ public class Bootstrap implements CommandLineRunner {
         roleRepository.save(roleTeacher);
         roleRepository.save(roleStudent);
 
+
+        User teacher = new User((long)2,
+                "teacher@gmail.com",
+                BCryptSingleton.getInstance().encode("123"),
+                "Teacher", 1,
+                new HashSet<Role>(Arrays.asList(roleTeacher)));
+        userRepository.save(teacher);
+
+        User student = new User((long)3,
+                "student@gmail.com",
+                BCryptSingleton.getInstance().encode("123"),
+                "Student", 1,
+                new HashSet<Role>(Arrays.asList(roleStudent)));
+        userRepository.save(student);
+
+        Lecture lecture = new Lecture(LocalDateTime.now());
+        lectureRepository.save(lecture);
+        Class cl = new Class((long) 1,
+                "Java",
+                teacher,
+                new HashSet<>(Arrays.asList(student)),
+                new HashSet<>(Arrays.asList(lecture)));
+        classRepository.save(cl);
 
     }
 }
