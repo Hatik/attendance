@@ -5,8 +5,13 @@ import it.academy.attendance.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,6 +23,16 @@ public class UsersController {
     @GetMapping("/")
     public List<User> getAllUsers(){
         return userService.getAll();
+    }
+    @GetMapping("/info")
+    public String getInfo(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            System.out.println("User has authorities: " + userDetails.getAuthorities());
+            return userDetails.getAuthorities().toString();
+        }
+        return "Error";
     }
 
     @PostMapping("/")

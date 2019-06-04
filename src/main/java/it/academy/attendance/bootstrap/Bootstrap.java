@@ -14,8 +14,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -34,7 +36,6 @@ public class Bootstrap implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Role roleAdmin = new Role((long) 1, "ADMIN");
         Role roleUser = new Role((long) 2, "USER");
-
         User user = new User((long)1,
                 "w.askhat.serikov@gmail.com",
                 BCryptSingleton.getInstance().encode("123"),
