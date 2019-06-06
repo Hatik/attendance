@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User save(User item) {
-        if (!userRepository.existsById(item.getId())) {// Register
+        if (item.getId() == null || !userRepository.existsById(item.getId())) {// Register
             item.setPassword(BCryptSingleton.getInstance().encode(item.getPassword()));
         }
         return userRepository.save(item);
@@ -65,5 +65,12 @@ public class UserServiceImpl implements UserService{
     }
     private HashSet<Role> getRoleSetFromSingleInstance(Role role){
         return new HashSet<>(Arrays.asList(role));
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findFirstByEmail(email);
+//        return userRepository.findAll().stream().filter(x -> x.getEmail().equals(email)).findFirst().get();
+
     }
 }

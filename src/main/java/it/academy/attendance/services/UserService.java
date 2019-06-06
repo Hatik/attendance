@@ -11,4 +11,5 @@ public interface UserService {
     User save(User item);
     User saveStudent(User item);
     User saveTeacher(User item);
+    User getByEmail(String email);
 }

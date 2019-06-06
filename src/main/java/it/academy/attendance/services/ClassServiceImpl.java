@@ -1,6 +1,7 @@
 package it.academy.attendance.services;
 
 import it.academy.attendance.models.Class;
+import it.academy.attendance.models.User;
 import it.academy.attendance.repositories.ClassRepository;
 import it.academy.attendance.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,17 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public boolean deleteById(Long id) {
         try {
+            //TODO delete only if the current user is the teacher, or is Admin
             classRepository.deleteById(id);
             return true;
         }catch (Exception e) {
             // TODO write to log object
             return false;
         }
+    }
+
+    @Override
+    public List<Class> getAllClassesByTeacher(User user) {
+        return classRepository.getAllByTeacher(user);
     }
 }
