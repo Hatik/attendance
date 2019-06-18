@@ -1,5 +1,6 @@
 package it.academy.attendance.controllers;
 
+import it.academy.attendance.dtos.UserEnrollDto;
 import it.academy.attendance.helpers.Helper;
 import it.academy.attendance.models.Lecture;
 import it.academy.attendance.models.User;
@@ -88,6 +89,28 @@ public class ClassesController {
     public ResponseEntity addLectureToClass(@PathVariable("id") Long id, @RequestBody Lecture lecture){
         try {
             return new ResponseEntity<>(lectureService.save(lecture, id), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e + "");
+        }
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN') or hasAuthority('STUDENT')")
+    @PostMapping("/{id}/enrollById")
+    public ResponseEntity enrollStudentToClassById(@PathVariable("id") Long id, @RequestBody UserEnrollDto userDto){
+        try {
+            return new ResponseEntity<>(classService.enrollStudent(id, userDto.getUserId()), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e + "");
+        }
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN') or hasAuthority('STUDENT')")
+    @PostMapping("/{id}/unrollById")
+    public ResponseEntity unrollStudentFromClassById(@PathVariable("id") Long id, @RequestBody UserEnrollDto userDto){
+        try {
+            return new ResponseEntity<>(classService.unrollStudent(id, userDto.getUserId()), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e + "");
