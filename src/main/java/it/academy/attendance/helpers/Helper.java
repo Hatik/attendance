@@ -1,4 +1,4 @@
-package it.academy.attendance;
+package it.academy.attendance.helpers;
 
 import it.academy.attendance.models.User;
 import it.academy.attendance.services.UserService;

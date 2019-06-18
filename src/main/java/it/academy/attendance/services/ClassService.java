@@ -10,4 +10,5 @@ public interface ClassService {
     boolean deleteById(Long id);
     Class save(Class item);
     List<Class> getAllClassesByTeacher(User user);
+
 }

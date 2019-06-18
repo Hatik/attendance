@@ -1,6 +1,8 @@
 package it.academy.attendance.controllers;
 
+import it.academy.attendance.models.Role;
 import it.academy.attendance.models.User;
+import it.academy.attendance.repositories.RoleRepository;
 import it.academy.attendance.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping("/")
     public List<User> getAllUsers(){
@@ -26,6 +30,7 @@ public class UsersController {
     }
     @GetMapping("/info")
     public String getInfo(){
+        Role role = roleRepository.findFirstByName("TEACHER");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
